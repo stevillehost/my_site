@@ -1,4 +1,5 @@
 from datetime import date
+from sre_constants import SRE_FLAG_DEBUG
 from django.shortcuts import render
 
 # Create your views here.
@@ -7,7 +8,7 @@ all_posts = [
     {
         "slug": "hike-in-the-mountains",
         "image": "mountains.jpg",
-        "author": "Maximilian",
+        "author": "Anone",
         "date": date(2021, 7, 21),
         "title": "Mountain Hiking",
         "excerpt": "There's nothing like the views you get when hiking in the mountains! And I wasn't even prepared for what happened whilst I was enjoying the view!",
@@ -28,7 +29,7 @@ all_posts = [
     {
         "slug": "programming-is-fun",
         "image": "coding.jpg",
-        "author": "Maximilian",
+        "author": "Stephen",
         "date": date(2022, 3, 10),
         "title": "Programming Is Great!",
         "excerpt": "Did you ever spend hours searching that one error in your code? Yep - that's what happened to me yesterday...",
@@ -49,7 +50,7 @@ all_posts = [
     {
         "slug": "into-the-woods",
         "image": "woods.jpg",
-        "author": "Maximilian",
+        "author": "Omaojo",
         "date": date(2020, 8, 5),
         "title": "Nature At Its Best",
         "excerpt": "Nature is amazing! The amount of inspiration I get when walking in nature is incredible!",
@@ -80,7 +81,12 @@ def starting_page(request):
     })
 
 def posts(request):
-    return render(request, "blog/all-posts.html")
+    return render(request, "blog/all-posts.html", {
+        "all_posts": all_posts
+    })
 
 def post_detail(request, slug):
-    return render(request, "blog/post-detail.html")
+    identified_post = next(post for post in all_posts if post['slug'] == slug)
+    return render(request, "blog/post-detail.html",{
+        "post": identified_post
+    })
